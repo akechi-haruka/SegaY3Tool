@@ -1,0 +1,52 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+name: .NET
+on:
+  push:
+    branches: [ "master", "dev/**" ]
+  pull_request:
+    branches: [ "master" ]
+  release:
+    types:
+      - published
+env:
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 1
+  DOTNET_NOLOGO: true
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore --configuration Release
+      - name: Publish
+        run: |
+          dotnet publish .\SegaY3Tool\SegaY3Tool.csproj --configuration Release /p:PublishProfile=.\SegaY3Tool\Properties\PublishProfiles\SegaY3Tool.pubxml
+      - name: Upload
+        uses: actions/upload-artifact@v7
+        with:
+          name: SegaY3Tool-latest
+          path: SegaY3Tool/publish
+          if-no-files-found: error
+          overwrite: true
+  deploy:
+    permissions:
+      contents: write
+    runs-on: windows-latest
+    needs: [ build ]
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          path: ${{ env.NuGetDirectory }}
+          merge-multiple: true
+          skip-decompress: true
+      -   name: Unzip .nupkg artifact
+          run: Expand-Archive ${{ env.NuGetDirectory }}\Sega835Lib.nupkg.zip ${{ env.NuGetDirectory }} -Force
+      - name: Add binaries to release
+        uses: softprops/action-gh-release@v3
+        with:
+          files: |
+            ${{ env.NuGetDirectory }}/*
