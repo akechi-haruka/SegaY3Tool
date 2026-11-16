@@ -12,19 +12,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="SEGA835Lib">
-        <HintPath>..\..\SEGA835Lib\SEGA835Lib\bin\Debug\net10.0-windows\SEGA835Lib.dll</HintPath>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="FormRender.cs">
         <SubType>Form</SubType>
       </Compile>
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Haruka.Arcade.SEGA835Lib" Version="0.8.11" />
       <PackageReference Include="System.IO.Ports" Version="11.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Y3CodeReaderNE.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <Target Name="SetHash" AfterTargets="InitializeSourceControlInformation">
