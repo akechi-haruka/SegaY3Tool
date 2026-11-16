@@ -70,19 +70,22 @@ public partial class FormRender : Form {
         g.DrawString(ld.IsGood ? "GOOD" : "BAD", font, ld.IsGood ? Brushes.LimeGreen : Brushes.Red, 0, 70);
 
         int startY = 140;
-        int width = 5;
-        int height = 5;
+        int width = (int)ld.X;
+        int height = (int)ld.Y;
         int rectWidth = client.Width / width;
         int rectHeight = 400 / height;
 
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                float lum = ld.GetLuminance(x, y);
-                g.FillRectangle(lum >= 0.4 && lum <= 0.75 ? Brushes.LimeGreen : Brushes.Red, x * rectWidth, startY + y * rectHeight, rectWidth, rectHeight);
-                g.DrawRectangle(Pens.Black, x * rectWidth, startY + y * rectHeight, rectWidth, rectHeight);
-                g.DrawString((int)(lum * 100) + "%", font, brush, x * rectWidth + rectWidth / 2F - 40, startY + y * rectHeight + rectHeight / 2F - 17);
+        if (width > 0 && height > 0) {
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    float lum = ld.GetLuminance(x, y);
+                    g.FillRectangle(lum >= 0.4 && lum <= 0.75 ? Brushes.LimeGreen : Brushes.Red, x * rectWidth, startY + y * rectHeight, rectWidth, rectHeight);
+                    g.DrawRectangle(Pens.Black, x * rectWidth, startY + y * rectHeight, rectWidth, rectHeight);
+                    g.DrawString((int)(lum * 100) + "%", font, brush, x * rectWidth + rectWidth / 2F - 40, startY + y * rectHeight + rectHeight / 2F - 17);
+                }
             }
         }
+        
     }
 
     private void DrawCards(Y3 y3, Graphics g) {
