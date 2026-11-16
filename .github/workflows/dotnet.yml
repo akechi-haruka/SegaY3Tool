@@ -40,13 +40,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v8
         with:
-          path: ${{ env.NuGetDirectory }}
+          path: release
           merge-multiple: true
           skip-decompress: true
-      -   name: Unzip .nupkg artifact
-          run: Expand-Archive ${{ env.NuGetDirectory }}\Sega835Lib.nupkg.zip ${{ env.NuGetDirectory }} -Force
       - name: Add binaries to release
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            ${{ env.NuGetDirectory }}/*
+            release/*
