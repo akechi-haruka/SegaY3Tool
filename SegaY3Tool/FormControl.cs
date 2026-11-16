@@ -217,6 +217,12 @@ public partial class FormControl : Form {
             }
         }
 
+        Y3.Status status;
+        do {
+            Thread.Sleep(250);
+            status = Y3.GetStatus();
+        } while (status == Y3.Status.Active || status == Y3.Status.BlockingProcess);
+
         Mode = newState;
 
         if (Mode == State.Cards) {
@@ -260,6 +266,8 @@ public partial class FormControl : Form {
             menuStripMain.Enabled = false;
             new Thread(WaitFirmwareUpdateT).Start();
         }
+
+        buttonApply.Enabled = Mode == State.Idle;
 
         UpdateBoardInfo();
     }
