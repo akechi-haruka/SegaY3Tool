@@ -274,6 +274,9 @@ public partial class FormControl : Form {
     private void WaitFirmwareUpdateT() {
         do {
             Thread.Sleep(1000);
+        } while (Y3 != null && Y3.FirmwareUpdate == null);
+        do {
+            Thread.Sleep(1000);
         } while ((Y3?.GetStatus() ?? Y3.Status.ErrorOther) == Y3.Status.BlockingProcess);
 
         Invoke(() => {

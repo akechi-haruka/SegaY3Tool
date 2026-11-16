@@ -18,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Haruka.Arcade.SEGA835Lib" Version="0.8.11" />
+      <PackageReference Include="Haruka.Arcade.SEGA835Lib" Version="0.8.11.1" />
       <PackageReference Include="System.IO.Ports" Version="11.0.0" />
     </ItemGroup>
 
