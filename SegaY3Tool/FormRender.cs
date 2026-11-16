@@ -72,10 +72,12 @@ public partial class FormRender : Form {
         int startY = 140;
         int width = (int)ld.X;
         int height = (int)ld.Y;
-        int rectWidth = client.Width / width;
-        int rectHeight = 400 / height;
 
         if (width > 0 && height > 0) {
+            
+            int rectWidth = client.Width / width;
+            int rectHeight = 400 / height;
+            
             for (int x = 0; x < width; x++) {
                 for (int y = 0; y < height; y++) {
                     float lum = ld.GetLuminance(x, y);
