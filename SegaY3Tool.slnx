@@ -3,6 +3,7 @@
     <File Path=".github/workflows/dotnet.yml" />
     <File Path=".gitignore" />
     <File Path="README.md" />
+    <File Path="screenshot.png" />
   </Folder>
   <Project Path="SegaY3Tool/SegaY3Tool.csproj" />
 </Solution>
