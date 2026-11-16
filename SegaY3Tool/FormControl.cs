@@ -256,20 +256,19 @@ public partial class FormControl : Form {
                 return;
             }
 
-            ret = Y3.UpdateFirmware(openFileDialogFirmware.FileName);
-            if (ret != DeviceStatus.Ok) {
-                ReportBoardErrorUi(ret, "start firmware update");
-                return;
-            }
-
             panelBoardControls.Enabled = false;
             menuStripMain.Enabled = false;
+            new Thread(ExecuteFirmwareUpdateT).Start();
             new Thread(WaitFirmwareUpdateT).Start();
         }
 
         buttonApply.Enabled = Mode == State.Idle;
 
         UpdateBoardInfo();
+    }
+
+    private void ExecuteFirmwareUpdateT() {
+        Y3.UpdateFirmware(openFileDialogFirmware.FileName);
     }
 
     private void WaitFirmwareUpdateT() {
