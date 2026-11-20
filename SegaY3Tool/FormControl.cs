@@ -43,7 +43,7 @@ public partial class FormControl : Form {
             connectToolStripMenuItem.DropDownItems.Remove(i);
         }
 
-        foreach (String str in SerialPort.GetPortNames()) {
+        foreach (string str in SerialPort.GetPortNames()) {
             connectToolStripMenuItem.DropDownItems.Add(new ToolStripMenuItem(str, null, (t, _) => { ConnectY3(((ToolStripMenuItem)t).Text); }) {
                 Tag = CONNECT_COM_ENTRY
             });
@@ -53,12 +53,6 @@ public partial class FormControl : Form {
     private void disconnectToolStripMenuItem_Click(object sender, EventArgs e) {
         DisconnectY3();
     }
-
-    private void buttonApply_Click(object sender, EventArgs e) {
-        ApplyBoardParams();
-        UpdateBoardInfo();
-    }
-
 
     private void radioButtonModeIdle_CheckedChanged(object sender, EventArgs e) {
         if (((RadioButton)sender).Checked) {
@@ -103,9 +97,58 @@ public partial class FormControl : Form {
             }
         }
     }
-    
+
     private void aboutToolStripMenuItem_Click(object sender, EventArgs e) {
         MessageBox.Show(this, Program.TITLE, Program.TITLE, MessageBoxButtons.OK);
+    }
+
+
+    private void buttonEditClbMode_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.ClbMode);
+    }
+
+    private void buttonEditCardType_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.CardType);
+    }
+
+    private void buttonEditCardMode_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.CardMode);
+    }
+
+    private void buttonEditProcMode_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.ProcMode);
+    }
+
+    private void buttonEditCodeMax_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.CodeMax);
+    }
+
+    private void buttonEditDebugMode_Click(object sender, EventArgs e) {
+        EditParameter(Y3.ParameterNumber.DebugMode);
+    }
+
+    private void playfieldToolStripMenuItem_Click(object sender, EventArgs e) {
+        DeviceStatus ret = Y3.SetParamsForPlayfield();
+        if (ret != DeviceStatus.Ok) {
+            ReportBoardErrorUi(ret, "setting playfield params");
+        }
+        UpdateBoardInfo();
+    }
+
+    private void printerToolStripMenuItem_Click(object sender, EventArgs e) {
+        DeviceStatus ret = Y3.SetParamsForPrinter();
+        if (ret != DeviceStatus.Ok) {
+            ReportBoardErrorUi(ret, "setting printer params");
+        }
+        UpdateBoardInfo();
+    }
+
+    private void testResetToolStripMenuItem_Click(object sender, EventArgs e) {
+        DeviceStatus ret = Y3.TestReset();
+        if (ret != DeviceStatus.Ok) {
+            ReportBoardErrorUi(ret, "test reset");
+        }
+        UpdateBoardInfo();
     }
 
     private void ConnectY3(string comPort) {
@@ -123,9 +166,15 @@ public partial class FormControl : Form {
             return;
         }
 
+        if (Y3.GetTargetCodeType() == Y3.TargetCodeType.Field) {
+            ret = Y3.SetParamsForPlayfield();
+        } else if (Y3.GetTargetCodeType() == Y3.TargetCodeType.Printer) {
+            ret = Y3.SetParamsForPrinter();
+        }
         UpdateBoardInfo();
-        ApplyBoardParams();
-        UpdateBoardInfo();
+        if (ret != DeviceStatus.Ok) {
+            ReportBoardErrorUi(ret, "setting parameters for target code");
+        }
 
         Mode = State.Idle;
 
@@ -134,6 +183,7 @@ public partial class FormControl : Form {
         panelBoardControls.Enabled = true;
         radioButtonModeIdle.Checked = true;
         resetToolStripMenuItem.Enabled = true;
+        actionsToolStripMenuItem.Enabled = true;
     }
 
     private void DisconnectY3() {
@@ -145,15 +195,25 @@ public partial class FormControl : Form {
         connectToolStripMenuItem.Enabled = true;
         panelBoardControls.Enabled = false;
         resetToolStripMenuItem.Enabled = false;
+        actionsToolStripMenuItem.Enabled = false;
     }
 
     private void UpdateBoardInfo() {
         labelModelNumber.Text = Y3?.GetDeviceModel() ?? "---";
         labelFirmwareId.Text = (Y3?.FirmwareName ?? "---") + "/" + (Y3?.FirmwareVersion ?? 0);
         labelFirmwareType.Text = Y3?.GetFirmwareType().ToString() ?? "---";
+        labelFirmwareDate.Text = Y3?.FirmwareDate.ToString() ?? "---";
         labelTargetCode.Text = Y3?.GetTargetCodeType().ToString() ?? "---";
         labelCalibrationStatus.Text = (Y3 != null ? (!Y3.IsCalibrationNeeded ? "GOOD" : "BAD") : "---");
         labelStatus.Text = Y3?.GetStatus().ToString() ?? "NotConnected";
+
+        if (Y3 != null) {
+            uint clbMode = GetParam(Y3.ParameterNumber.ClbMode);
+            uint codeMax = GetParam(Y3.ParameterNumber.CodeMax);
+
+            playfieldToolStripMenuItem.Checked = clbMode == 0x0 && codeMax == 16;
+            printerToolStripMenuItem.Checked = codeMax == 1;
+        }
 
         SetUiParam(Y3.ParameterNumber.CardMode, labelParamCardMode);
         SetUiParam(Y3.ParameterNumber.CardType, labelParamCardType);
@@ -161,6 +221,14 @@ public partial class FormControl : Form {
         SetUiParam(Y3.ParameterNumber.CodeMax, labelParamCodeMax);
         SetUiParam(Y3.ParameterNumber.DebugMode, labelParamDebugMode);
         SetUiParam(Y3.ParameterNumber.ProcMode, labelParamProcMode);
+    }
+
+    private uint GetParam(Y3.ParameterNumber param) {
+        DeviceStatus ret = Y3.GetParameter(param, out uint value);
+        if (ret != DeviceStatus.Ok) {
+            ReportBoardErrorUi(ret, "read parameter " + param);
+        }
+        return value;
     }
 
     private void SetUiParam(Y3.ParameterNumber param, Label label) {
@@ -177,25 +245,8 @@ public partial class FormControl : Form {
         }
     }
 
-    private void ApplyBoardParams() {
-        DeviceStatus ret = Y3.SetClbMode(checkBoxClb.Checked);
-        if (ret != DeviceStatus.Ok) {
-            ReportBoardErrorUi(ret);
-            return;
-        }
-
-        ret = Y3.SetCardCount((uint)numericUpDownCardCount.Value);
-        if (ret != DeviceStatus.Ok) {
-            ReportBoardErrorUi(ret);
-            return;
-        }
-    }
-
-    private void ReportBoardErrorUi(DeviceStatus ret, String message = null) {
-        uint errorCode = Y3.GetBoardErrorCode();
-        String errorMessage = errorCode > 0 ? Y3.GetBoardErrorMessage(errorCode) : "---";
-        Y3.Status status = Y3.GetStatus();
-        MessageBox.Show(this, "Error during " + (message ?? "operation") + ":\n\nOperation Result: " + ret + "\nBoard Status: " + status + " (0x" + ((int)status).ToString("X") + ")" + "\nOperation Error: " + errorCode + " / " + errorMessage, Program.TITLE, MessageBoxButtons.OK, MessageBoxIcon.Error);
+    public void ReportBoardErrorUi(DeviceStatus ret, String message = null) {
+        Program.ReportBoardErrorUi(this, ret, Y3, message);
     }
 
     private void UpdateState(State newState) {
@@ -251,7 +302,15 @@ public partial class FormControl : Form {
                 return;
             }
 
-            if (MessageBox.Show(this, "Begin Firmware Update?\n" + openFileDialogFirmware.FileName, Program.TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning) != DialogResult.Yes) {
+            byte[] data = File.ReadAllBytes(openFileDialogFirmware.FileName);
+            if (data.IndexOf(Encoding.ASCII.GetBytes("Y3 BOOT LOADER")) == -1) {
+                if (MessageBox.Show(this, "Selected file does not look like a Y3 firmware file. Proceed?", Program.TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Error, MessageBoxDefaultButton.Button3) != DialogResult.Yes) {
+                    radioButtonModeIdle.Checked = true;
+                    return;
+                }
+            }
+
+            if (MessageBox.Show(this, "Begin Firmware Update?\n" + openFileDialogFirmware.FileName, Program.TITLE, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button3) != DialogResult.Yes) {
                 radioButtonModeIdle.Checked = true;
                 return;
             }
@@ -262,7 +321,7 @@ public partial class FormControl : Form {
             new Thread(WaitFirmwareUpdateT).Start();
         }
 
-        buttonApply.Enabled = Mode == State.Idle;
+        groupBoxParameters.Enabled = Mode == State.Idle;
 
         UpdateBoardInfo();
     }
@@ -275,20 +334,37 @@ public partial class FormControl : Form {
         do {
             Thread.Sleep(1000);
         } while (Y3 != null && Y3.FirmwareUpdate == null);
+
         do {
             Thread.Sleep(1000);
         } while ((Y3?.GetStatus() ?? Y3.Status.ErrorOther) == Y3.Status.BlockingProcess);
 
         Invoke(() => {
-            Y3.FirmwareUpdateStatus fw = Y3?.FirmwareUpdate;
-            if (fw != null) {
-                if (fw.DeviceStatus == DeviceStatus.Ok) {
-                    MessageBox.Show(this, "Success", Program.TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (Y3 != null) {
+                Y3.FirmwareUpdateStatus fw = Y3.FirmwareUpdate;
+                do {
+                    Thread.Sleep(500);
+                } while (fw != null && fw.DeviceStatus == DeviceStatus.Busy);
+                if (fw != null) {
+                    if (fw.DeviceStatus == DeviceStatus.Ok) {
+                        MessageBox.Show(this, "Success", Program.TITLE, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    } else {
+                        ReportBoardErrorUi(fw.DeviceStatus, "firmware update");
+                    }
+                }
+
+                Y3.Disconnect();
+                DeviceStatus ret = Y3.Connect();
+                if (ret == DeviceStatus.Ok) {
+                    ret = Y3.Reset();
+                    if (ret != DeviceStatus.Ok) {
+                        ReportBoardErrorUi(ret, "resetting after update");
+                    }
                 } else {
-                    ReportBoardErrorUi(fw.DeviceStatus, "firmware update");
+                    ReportBoardErrorUi(ret, "reconnecting after update");
                 }
             }
-
+            
             UpdateBoardInfo();
 
             radioButtonModeIdle.Checked = true;
@@ -297,4 +373,10 @@ public partial class FormControl : Form {
         });
     }
 
+    private void EditParameter(Y3.ParameterNumber param) {
+        FormEditParam edit = new FormEditParam(this, Y3, param);
+        if (edit.ShowDialog(this) == DialogResult.OK) {
+            UpdateBoardInfo();
+        }
+    }
 }

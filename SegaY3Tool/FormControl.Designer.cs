@@ -34,8 +34,21 @@ partial class FormControl {
         toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
         resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        actionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        setParametersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        playfieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        printerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        testResetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+        toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+        aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         panelBoardControls = new System.Windows.Forms.Panel();
-        groupBox3 = new System.Windows.Forms.GroupBox();
+        groupBoxParameters = new System.Windows.Forms.GroupBox();
+        buttonEditDebugMode = new System.Windows.Forms.Button();
+        buttonEditCodeMax = new System.Windows.Forms.Button();
+        buttonEditProcMode = new System.Windows.Forms.Button();
+        buttonEditCardMode = new System.Windows.Forms.Button();
+        buttonEditCardType = new System.Windows.Forms.Button();
+        buttonEditClbMode = new System.Windows.Forms.Button();
         labelParamDebugMode = new System.Windows.Forms.Label();
         labelParamCodeMax = new System.Windows.Forms.Label();
         labelParamProcMode = new System.Windows.Forms.Label();
@@ -48,8 +61,9 @@ partial class FormControl {
         label8 = new System.Windows.Forms.Label();
         labelParamClb = new System.Windows.Forms.Label();
         label9 = new System.Windows.Forms.Label();
-        buttonApply = new System.Windows.Forms.Button();
         groupBox2 = new System.Windows.Forms.GroupBox();
+        labelFirmwareDate = new System.Windows.Forms.Label();
+        label1 = new System.Windows.Forms.Label();
         labelCalibrationStatus = new System.Windows.Forms.Label();
         label7 = new System.Windows.Forms.Label();
         labelFirmwareId = new System.Windows.Forms.Label();
@@ -62,9 +76,6 @@ partial class FormControl {
         label4 = new System.Windows.Forms.Label();
         label3 = new System.Windows.Forms.Label();
         label2 = new System.Windows.Forms.Label();
-        label1 = new System.Windows.Forms.Label();
-        numericUpDownCardCount = new System.Windows.Forms.NumericUpDown();
-        checkBoxClb = new System.Windows.Forms.CheckBox();
         groupBox1 = new System.Windows.Forms.GroupBox();
         radioButtonModeCalibrate = new System.Windows.Forms.RadioButton();
         radioButtonModeFlashFirmware = new System.Windows.Forms.RadioButton();
@@ -72,13 +83,10 @@ partial class FormControl {
         radioButtonModeReadCards = new System.Windows.Forms.RadioButton();
         radioButtonModeIdle = new System.Windows.Forms.RadioButton();
         openFileDialogFirmware = new System.Windows.Forms.OpenFileDialog();
-        toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-        aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
         menuStripMain.SuspendLayout();
         panelBoardControls.SuspendLayout();
-        groupBox3.SuspendLayout();
+        groupBoxParameters.SuspendLayout();
         groupBox2.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)numericUpDownCardCount).BeginInit();
         groupBox1.SuspendLayout();
         SuspendLayout();
         // 
@@ -108,7 +116,7 @@ partial class FormControl {
         // 
         // boardToolStripMenuItem
         // 
-        boardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { connectToolStripMenuItem, resetToolStripMenuItem, disconnectToolStripMenuItem });
+        boardToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { connectToolStripMenuItem, actionsToolStripMenuItem, resetToolStripMenuItem, disconnectToolStripMenuItem });
         boardToolStripMenuItem.Name = "boardToolStripMenuItem";
         boardToolStripMenuItem.Size = new System.Drawing.Size(75, 29);
         boardToolStripMenuItem.Text = "Board";
@@ -118,7 +126,7 @@ partial class FormControl {
         // 
         connectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { availablePortsToolStripMenuItem, toolStripSeparator1 });
         connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-        connectToolStripMenuItem.Size = new System.Drawing.Size(201, 34);
+        connectToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
         connectToolStripMenuItem.Text = "Connect";
         // 
         // availablePortsToolStripMenuItem
@@ -137,7 +145,7 @@ partial class FormControl {
         // 
         resetToolStripMenuItem.Enabled = false;
         resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-        resetToolStripMenuItem.Size = new System.Drawing.Size(201, 34);
+        resetToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
         resetToolStripMenuItem.Text = "Reset";
         resetToolStripMenuItem.Click += resetToolStripMenuItem_Click;
         // 
@@ -145,52 +153,176 @@ partial class FormControl {
         // 
         disconnectToolStripMenuItem.Enabled = false;
         disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-        disconnectToolStripMenuItem.Size = new System.Drawing.Size(201, 34);
+        disconnectToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
         disconnectToolStripMenuItem.Text = "Disconnect";
         disconnectToolStripMenuItem.Click += disconnectToolStripMenuItem_Click;
+        // 
+        // actionsToolStripMenuItem
+        // 
+        actionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { setParametersToolStripMenuItem, testResetToolStripMenuItem });
+        actionsToolStripMenuItem.Enabled = false;
+        actionsToolStripMenuItem.Name = "actionsToolStripMenuItem";
+        actionsToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        actionsToolStripMenuItem.Text = "Actions";
+        // 
+        // setParametersToolStripMenuItem
+        // 
+        setParametersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { playfieldToolStripMenuItem, printerToolStripMenuItem });
+        setParametersToolStripMenuItem.Name = "setParametersToolStripMenuItem";
+        setParametersToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        setParametersToolStripMenuItem.Text = "Set Parameters";
+        // 
+        // playfieldToolStripMenuItem
+        // 
+        playfieldToolStripMenuItem.Name = "playfieldToolStripMenuItem";
+        playfieldToolStripMenuItem.Size = new System.Drawing.Size(180, 34);
+        playfieldToolStripMenuItem.Text = "Playfield";
+        playfieldToolStripMenuItem.Click += playfieldToolStripMenuItem_Click;
+        // 
+        // printerToolStripMenuItem
+        // 
+        printerToolStripMenuItem.Name = "printerToolStripMenuItem";
+        printerToolStripMenuItem.Size = new System.Drawing.Size(180, 34);
+        printerToolStripMenuItem.Text = "Printer";
+        printerToolStripMenuItem.Click += printerToolStripMenuItem_Click;
+        // 
+        // testResetToolStripMenuItem
+        // 
+        testResetToolStripMenuItem.Name = "testResetToolStripMenuItem";
+        testResetToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+        testResetToolStripMenuItem.Text = "TestReset";
+        testResetToolStripMenuItem.Click += testResetToolStripMenuItem_Click;
+        // 
+        // toolStripMenuItem1
+        // 
+        toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { aboutToolStripMenuItem });
+        toolStripMenuItem1.Name = "toolStripMenuItem1";
+        toolStripMenuItem1.Size = new System.Drawing.Size(36, 29);
+        toolStripMenuItem1.Text = "?";
+        // 
+        // aboutToolStripMenuItem
+        // 
+        aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+        aboutToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+        aboutToolStripMenuItem.Text = "About";
+        aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
         // 
         // panelBoardControls
         // 
         panelBoardControls.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
-        panelBoardControls.Controls.Add(groupBox3);
-        panelBoardControls.Controls.Add(buttonApply);
+        panelBoardControls.Controls.Add(groupBoxParameters);
         panelBoardControls.Controls.Add(groupBox2);
-        panelBoardControls.Controls.Add(label1);
-        panelBoardControls.Controls.Add(numericUpDownCardCount);
-        panelBoardControls.Controls.Add(checkBoxClb);
         panelBoardControls.Controls.Add(groupBox1);
         panelBoardControls.Enabled = false;
         panelBoardControls.Location = new System.Drawing.Point(12, 36);
         panelBoardControls.Name = "panelBoardControls";
-        panelBoardControls.Size = new System.Drawing.Size(568, 594);
+        panelBoardControls.Size = new System.Drawing.Size(568, 514);
         panelBoardControls.TabIndex = 1;
         // 
-        // groupBox3
+        // groupBoxParameters
         // 
-        groupBox3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
-        groupBox3.Controls.Add(labelParamDebugMode);
-        groupBox3.Controls.Add(labelParamCodeMax);
-        groupBox3.Controls.Add(labelParamProcMode);
-        groupBox3.Controls.Add(labelParamCardMode);
-        groupBox3.Controls.Add(labelParamCardType);
-        groupBox3.Controls.Add(label13);
-        groupBox3.Controls.Add(label12);
-        groupBox3.Controls.Add(label11);
-        groupBox3.Controls.Add(label10);
-        groupBox3.Controls.Add(label8);
-        groupBox3.Controls.Add(labelParamClb);
-        groupBox3.Controls.Add(label9);
-        groupBox3.Location = new System.Drawing.Point(291, 325);
-        groupBox3.Name = "groupBox3";
-        groupBox3.Size = new System.Drawing.Size(274, 266);
-        groupBox3.TabIndex = 7;
-        groupBox3.TabStop = false;
-        groupBox3.Text = "Parameters";
+        groupBoxParameters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
+        groupBoxParameters.Controls.Add(buttonEditDebugMode);
+        groupBoxParameters.Controls.Add(buttonEditCodeMax);
+        groupBoxParameters.Controls.Add(buttonEditProcMode);
+        groupBoxParameters.Controls.Add(buttonEditCardMode);
+        groupBoxParameters.Controls.Add(buttonEditCardType);
+        groupBoxParameters.Controls.Add(buttonEditClbMode);
+        groupBoxParameters.Controls.Add(labelParamDebugMode);
+        groupBoxParameters.Controls.Add(labelParamCodeMax);
+        groupBoxParameters.Controls.Add(labelParamProcMode);
+        groupBoxParameters.Controls.Add(labelParamCardMode);
+        groupBoxParameters.Controls.Add(labelParamCardType);
+        groupBoxParameters.Controls.Add(label13);
+        groupBoxParameters.Controls.Add(label12);
+        groupBoxParameters.Controls.Add(label11);
+        groupBoxParameters.Controls.Add(label10);
+        groupBoxParameters.Controls.Add(label8);
+        groupBoxParameters.Controls.Add(labelParamClb);
+        groupBoxParameters.Controls.Add(label9);
+        groupBoxParameters.Location = new System.Drawing.Point(291, 220);
+        groupBoxParameters.Name = "groupBoxParameters";
+        groupBoxParameters.Size = new System.Drawing.Size(274, 291);
+        groupBoxParameters.TabIndex = 7;
+        groupBoxParameters.TabStop = false;
+        groupBoxParameters.Text = "Parameters";
+        // 
+        // buttonEditDebugMode
+        // 
+        buttonEditDebugMode.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditDebugMode.AutoSize = true;
+        buttonEditDebugMode.Location = new System.Drawing.Point(234, 232);
+        buttonEditDebugMode.Name = "buttonEditDebugMode";
+        buttonEditDebugMode.Size = new System.Drawing.Size(34, 35);
+        buttonEditDebugMode.TabIndex = 22;
+        buttonEditDebugMode.Text = "...";
+        buttonEditDebugMode.UseVisualStyleBackColor = true;
+        buttonEditDebugMode.Click += buttonEditDebugMode_Click;
+        // 
+        // buttonEditCodeMax
+        // 
+        buttonEditCodeMax.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditCodeMax.AutoSize = true;
+        buttonEditCodeMax.Location = new System.Drawing.Point(234, 191);
+        buttonEditCodeMax.Name = "buttonEditCodeMax";
+        buttonEditCodeMax.Size = new System.Drawing.Size(34, 35);
+        buttonEditCodeMax.TabIndex = 21;
+        buttonEditCodeMax.Text = "...";
+        buttonEditCodeMax.UseVisualStyleBackColor = true;
+        buttonEditCodeMax.Click += buttonEditCodeMax_Click;
+        // 
+        // buttonEditProcMode
+        // 
+        buttonEditProcMode.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditProcMode.AutoSize = true;
+        buttonEditProcMode.Location = new System.Drawing.Point(234, 150);
+        buttonEditProcMode.Name = "buttonEditProcMode";
+        buttonEditProcMode.Size = new System.Drawing.Size(34, 35);
+        buttonEditProcMode.TabIndex = 20;
+        buttonEditProcMode.Text = "...";
+        buttonEditProcMode.UseVisualStyleBackColor = true;
+        buttonEditProcMode.Click += buttonEditProcMode_Click;
+        // 
+        // buttonEditCardMode
+        // 
+        buttonEditCardMode.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditCardMode.AutoSize = true;
+        buttonEditCardMode.Location = new System.Drawing.Point(234, 109);
+        buttonEditCardMode.Name = "buttonEditCardMode";
+        buttonEditCardMode.Size = new System.Drawing.Size(34, 35);
+        buttonEditCardMode.TabIndex = 19;
+        buttonEditCardMode.Text = "...";
+        buttonEditCardMode.UseVisualStyleBackColor = true;
+        buttonEditCardMode.Click += buttonEditCardMode_Click;
+        // 
+        // buttonEditCardType
+        // 
+        buttonEditCardType.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditCardType.AutoSize = true;
+        buttonEditCardType.Location = new System.Drawing.Point(234, 68);
+        buttonEditCardType.Name = "buttonEditCardType";
+        buttonEditCardType.Size = new System.Drawing.Size(34, 35);
+        buttonEditCardType.TabIndex = 18;
+        buttonEditCardType.Text = "...";
+        buttonEditCardType.UseVisualStyleBackColor = true;
+        buttonEditCardType.Click += buttonEditCardType_Click;
+        // 
+        // buttonEditClbMode
+        // 
+        buttonEditClbMode.Anchor = ((System.Windows.Forms.AnchorStyles)(System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right));
+        buttonEditClbMode.AutoSize = true;
+        buttonEditClbMode.Location = new System.Drawing.Point(234, 27);
+        buttonEditClbMode.Name = "buttonEditClbMode";
+        buttonEditClbMode.Size = new System.Drawing.Size(34, 35);
+        buttonEditClbMode.TabIndex = 17;
+        buttonEditClbMode.Text = "...";
+        buttonEditClbMode.UseVisualStyleBackColor = true;
+        buttonEditClbMode.Click += buttonEditClbMode_Click;
         // 
         // labelParamDebugMode
         // 
         labelParamDebugMode.AutoSize = true;
-        labelParamDebugMode.Location = new System.Drawing.Point(166, 202);
+        labelParamDebugMode.Location = new System.Drawing.Point(146, 237);
         labelParamDebugMode.Name = "labelParamDebugMode";
         labelParamDebugMode.Size = new System.Drawing.Size(33, 25);
         labelParamDebugMode.TabIndex = 16;
@@ -199,7 +331,7 @@ partial class FormControl {
         // labelParamCodeMax
         // 
         labelParamCodeMax.AutoSize = true;
-        labelParamCodeMax.Location = new System.Drawing.Point(166, 167);
+        labelParamCodeMax.Location = new System.Drawing.Point(146, 196);
         labelParamCodeMax.Name = "labelParamCodeMax";
         labelParamCodeMax.Size = new System.Drawing.Size(33, 25);
         labelParamCodeMax.TabIndex = 15;
@@ -208,7 +340,7 @@ partial class FormControl {
         // labelParamProcMode
         // 
         labelParamProcMode.AutoSize = true;
-        labelParamProcMode.Location = new System.Drawing.Point(166, 131);
+        labelParamProcMode.Location = new System.Drawing.Point(146, 155);
         labelParamProcMode.Name = "labelParamProcMode";
         labelParamProcMode.Size = new System.Drawing.Size(33, 25);
         labelParamProcMode.TabIndex = 14;
@@ -217,7 +349,7 @@ partial class FormControl {
         // labelParamCardMode
         // 
         labelParamCardMode.AutoSize = true;
-        labelParamCardMode.Location = new System.Drawing.Point(166, 95);
+        labelParamCardMode.Location = new System.Drawing.Point(146, 114);
         labelParamCardMode.Name = "labelParamCardMode";
         labelParamCardMode.Size = new System.Drawing.Size(33, 25);
         labelParamCardMode.TabIndex = 13;
@@ -226,7 +358,7 @@ partial class FormControl {
         // labelParamCardType
         // 
         labelParamCardType.AutoSize = true;
-        labelParamCardType.Location = new System.Drawing.Point(166, 61);
+        labelParamCardType.Location = new System.Drawing.Point(146, 73);
         labelParamCardType.Name = "labelParamCardType";
         labelParamCardType.Size = new System.Drawing.Size(33, 25);
         labelParamCardType.TabIndex = 12;
@@ -235,7 +367,7 @@ partial class FormControl {
         // label13
         // 
         label13.AutoSize = true;
-        label13.Location = new System.Drawing.Point(6, 202);
+        label13.Location = new System.Drawing.Point(6, 237);
         label13.Name = "label13";
         label13.Size = new System.Drawing.Size(117, 25);
         label13.TabIndex = 11;
@@ -244,7 +376,7 @@ partial class FormControl {
         // label12
         // 
         label12.AutoSize = true;
-        label12.Location = new System.Drawing.Point(6, 167);
+        label12.Location = new System.Drawing.Point(8, 196);
         label12.Name = "label12";
         label12.Size = new System.Drawing.Size(91, 25);
         label12.TabIndex = 10;
@@ -253,7 +385,7 @@ partial class FormControl {
         // label11
         // 
         label11.AutoSize = true;
-        label11.Location = new System.Drawing.Point(6, 131);
+        label11.Location = new System.Drawing.Point(8, 155);
         label11.Name = "label11";
         label11.Size = new System.Drawing.Size(98, 25);
         label11.TabIndex = 9;
@@ -262,7 +394,7 @@ partial class FormControl {
         // label10
         // 
         label10.AutoSize = true;
-        label10.Location = new System.Drawing.Point(6, 95);
+        label10.Location = new System.Drawing.Point(6, 114);
         label10.Name = "label10";
         label10.Size = new System.Drawing.Size(100, 25);
         label10.TabIndex = 8;
@@ -271,7 +403,7 @@ partial class FormControl {
         // label8
         // 
         label8.AutoSize = true;
-        label8.Location = new System.Drawing.Point(6, 61);
+        label8.Location = new System.Drawing.Point(6, 73);
         label8.Name = "label8";
         label8.Size = new System.Drawing.Size(90, 25);
         label8.TabIndex = 7;
@@ -280,7 +412,7 @@ partial class FormControl {
         // labelParamClb
         // 
         labelParamClb.AutoSize = true;
-        labelParamClb.Location = new System.Drawing.Point(166, 27);
+        labelParamClb.Location = new System.Drawing.Point(146, 32);
         labelParamClb.Name = "labelParamClb";
         labelParamClb.Size = new System.Drawing.Size(33, 25);
         labelParamClb.TabIndex = 6;
@@ -289,26 +421,17 @@ partial class FormControl {
         // label9
         // 
         label9.AutoSize = true;
-        label9.Location = new System.Drawing.Point(6, 27);
+        label9.Location = new System.Drawing.Point(8, 32);
         label9.Name = "label9";
         label9.Size = new System.Drawing.Size(89, 25);
         label9.TabIndex = 5;
         label9.Text = "ClbMode:";
         // 
-        // buttonApply
-        // 
-        buttonApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right));
-        buttonApply.Location = new System.Drawing.Point(3, 287);
-        buttonApply.Name = "buttonApply";
-        buttonApply.Size = new System.Drawing.Size(562, 32);
-        buttonApply.TabIndex = 6;
-        buttonApply.Text = "Apply";
-        buttonApply.UseVisualStyleBackColor = true;
-        buttonApply.Click += buttonApply_Click;
-        // 
         // groupBox2
         // 
         groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left));
+        groupBox2.Controls.Add(labelFirmwareDate);
+        groupBox2.Controls.Add(label1);
         groupBox2.Controls.Add(labelCalibrationStatus);
         groupBox2.Controls.Add(label7);
         groupBox2.Controls.Add(labelFirmwareId);
@@ -321,17 +444,35 @@ partial class FormControl {
         groupBox2.Controls.Add(label4);
         groupBox2.Controls.Add(label3);
         groupBox2.Controls.Add(label2);
-        groupBox2.Location = new System.Drawing.Point(9, 325);
+        groupBox2.Location = new System.Drawing.Point(9, 220);
         groupBox2.Name = "groupBox2";
-        groupBox2.Size = new System.Drawing.Size(276, 266);
+        groupBox2.Size = new System.Drawing.Size(276, 291);
         groupBox2.TabIndex = 5;
         groupBox2.TabStop = false;
         groupBox2.Text = "Info";
         // 
+        // labelFirmwareDate
+        // 
+        labelFirmwareDate.AutoSize = true;
+        labelFirmwareDate.Location = new System.Drawing.Point(166, 166);
+        labelFirmwareDate.Name = "labelFirmwareDate";
+        labelFirmwareDate.Size = new System.Drawing.Size(33, 25);
+        labelFirmwareDate.TabIndex = 13;
+        labelFirmwareDate.Text = "---";
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.Location = new System.Drawing.Point(6, 166);
+        label1.Name = "label1";
+        label1.Size = new System.Drawing.Size(130, 25);
+        label1.TabIndex = 12;
+        label1.Text = "Firmware Date:";
+        // 
         // labelCalibrationStatus
         // 
         labelCalibrationStatus.AutoSize = true;
-        labelCalibrationStatus.Location = new System.Drawing.Point(166, 167);
+        labelCalibrationStatus.Location = new System.Drawing.Point(166, 201);
         labelCalibrationStatus.Name = "labelCalibrationStatus";
         labelCalibrationStatus.Size = new System.Drawing.Size(33, 25);
         labelCalibrationStatus.TabIndex = 11;
@@ -340,7 +481,7 @@ partial class FormControl {
         // label7
         // 
         label7.AutoSize = true;
-        label7.Location = new System.Drawing.Point(6, 167);
+        label7.Location = new System.Drawing.Point(6, 201);
         label7.Name = "label7";
         label7.Size = new System.Drawing.Size(154, 25);
         label7.TabIndex = 10;
@@ -367,7 +508,7 @@ partial class FormControl {
         // labelStatus
         // 
         labelStatus.AutoSize = true;
-        labelStatus.Location = new System.Drawing.Point(90, 226);
+        labelStatus.Location = new System.Drawing.Point(90, 250);
         labelStatus.Name = "labelStatus";
         labelStatus.Size = new System.Drawing.Size(127, 25);
         labelStatus.TabIndex = 7;
@@ -403,7 +544,7 @@ partial class FormControl {
         // label5
         // 
         label5.AutoSize = true;
-        label5.Location = new System.Drawing.Point(6, 226);
+        label5.Location = new System.Drawing.Point(6, 250);
         label5.Name = "label5";
         label5.Size = new System.Drawing.Size(64, 25);
         label5.TabIndex = 3;
@@ -435,37 +576,6 @@ partial class FormControl {
         label2.Size = new System.Drawing.Size(137, 25);
         label2.TabIndex = 0;
         label2.Text = "Model Number:";
-        // 
-        // label1
-        // 
-        label1.AutoSize = true;
-        label1.Location = new System.Drawing.Point(3, 252);
-        label1.Name = "label1";
-        label1.Size = new System.Drawing.Size(145, 25);
-        label1.TabIndex = 4;
-        label1.Text = "Maximum Cards:";
-        // 
-        // numericUpDownCardCount
-        // 
-        numericUpDownCardCount.Location = new System.Drawing.Point(154, 250);
-        numericUpDownCardCount.Maximum = new decimal(new int[] { 16, 0, 0, 0 });
-        numericUpDownCardCount.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-        numericUpDownCardCount.Name = "numericUpDownCardCount";
-        numericUpDownCardCount.Size = new System.Drawing.Size(104, 31);
-        numericUpDownCardCount.TabIndex = 3;
-        numericUpDownCardCount.Value = new decimal(new int[] { 16, 0, 0, 0 });
-        // 
-        // checkBoxClb
-        // 
-        checkBoxClb.AutoSize = true;
-        checkBoxClb.Checked = true;
-        checkBoxClb.CheckState = System.Windows.Forms.CheckState.Checked;
-        checkBoxClb.Location = new System.Drawing.Point(3, 220);
-        checkBoxClb.Name = "checkBoxClb";
-        checkBoxClb.Size = new System.Drawing.Size(67, 29);
-        checkBoxClb.TabIndex = 2;
-        checkBoxClb.Text = "CLB";
-        checkBoxClb.UseVisualStyleBackColor = true;
         // 
         // groupBox1
         // 
@@ -545,25 +655,11 @@ partial class FormControl {
         openFileDialogFirmware.Filter = "*.bin|*.bin";
         openFileDialogFirmware.Title = "Select Firmware File";
         // 
-        // toolStripMenuItem1
-        // 
-        toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { aboutToolStripMenuItem });
-        toolStripMenuItem1.Name = "toolStripMenuItem1";
-        toolStripMenuItem1.Size = new System.Drawing.Size(36, 29);
-        toolStripMenuItem1.Text = "?";
-        // 
-        // aboutToolStripMenuItem
-        // 
-        aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-        aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
-        aboutToolStripMenuItem.Text = "About";
-        aboutToolStripMenuItem.Click += aboutToolStripMenuItem_Click;
-        // 
         // FormControl
         // 
         AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
         AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        ClientSize = new System.Drawing.Size(592, 642);
+        ClientSize = new System.Drawing.Size(592, 562);
         Controls.Add(panelBoardControls);
         Controls.Add(menuStripMain);
         FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -575,17 +671,33 @@ partial class FormControl {
         menuStripMain.ResumeLayout(false);
         menuStripMain.PerformLayout();
         panelBoardControls.ResumeLayout(false);
-        panelBoardControls.PerformLayout();
-        groupBox3.ResumeLayout(false);
-        groupBox3.PerformLayout();
+        groupBoxParameters.ResumeLayout(false);
+        groupBoxParameters.PerformLayout();
         groupBox2.ResumeLayout(false);
         groupBox2.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)numericUpDownCardCount).EndInit();
         groupBox1.ResumeLayout(false);
         groupBox1.PerformLayout();
         ResumeLayout(false);
         PerformLayout();
     }
+
+    private System.Windows.Forms.ToolStripMenuItem actionsToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem setParametersToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem playfieldToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem printerToolStripMenuItem;
+    private System.Windows.Forms.ToolStripMenuItem testResetToolStripMenuItem;
+
+    private System.Windows.Forms.Label label1;
+    private System.Windows.Forms.Label labelFirmwareDate;
+
+    private System.Windows.Forms.Button buttonEditClbMode;
+
+    private System.Windows.Forms.Button buttonEditCardMode;
+    private System.Windows.Forms.Button buttonEditProcMode;
+    private System.Windows.Forms.Button buttonEditCodeMax;
+    private System.Windows.Forms.Button buttonEditDebugMode;
+
+    private System.Windows.Forms.Button buttonEditCardType;
 
     private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -611,9 +723,8 @@ partial class FormControl {
     private System.Windows.Forms.Label labelParamClb;
     private System.Windows.Forms.Label label9;
 
-    private System.Windows.Forms.GroupBox groupBox3;
+    private System.Windows.Forms.GroupBox groupBoxParameters;
 
-    private System.Windows.Forms.Button buttonApply;
     private System.Windows.Forms.Label label7;
     private System.Windows.Forms.Label labelCalibrationStatus;
 
@@ -632,9 +743,6 @@ partial class FormControl {
     private System.Windows.Forms.Label label2;
 
     private System.Windows.Forms.RadioButton radioButtonModeFlashFirmware;
-    private System.Windows.Forms.CheckBox checkBoxClb;
-    private System.Windows.Forms.NumericUpDown numericUpDownCardCount;
-    private System.Windows.Forms.Label label1;
     private System.Windows.Forms.GroupBox groupBox2;
 
     private System.Windows.Forms.RadioButton radioButtonModeReadCards;

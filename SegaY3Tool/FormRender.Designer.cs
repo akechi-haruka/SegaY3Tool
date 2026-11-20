@@ -36,7 +36,7 @@ partial class FormRender {
         ClientSize = new System.Drawing.Size(674, 683);
         ControlBox = false;
         DoubleBuffered = true;
-        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+        FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
         StartPosition = System.Windows.Forms.FormStartPosition.Manual;
         Text = "Render";
         ResumeLayout(false);
